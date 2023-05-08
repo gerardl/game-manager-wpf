@@ -15,5 +15,10 @@ namespace GameManager.Lib.Services
         Task<Player> GetPlayerAsync(int id);
         Task<int> AddPlayerAsync(Player player);
         Task UpdatePlayerAsync(Player player);
+        Task DeletePlayerAsync(Player player);
+        Task<List<Mob>> GetMobsAsync();
+        Task<Mob> GetMobAsync(int id);
+        Task<int> AddMobAsync(Mob mob);
+        Task UpdateMobAsync(Mob mob);
     }
 }

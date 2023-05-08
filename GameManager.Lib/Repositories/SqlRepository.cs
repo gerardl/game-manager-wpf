@@ -121,5 +121,19 @@ namespace GameManager.Lib.Repositories
                 throw;
             }
         }
+
+        public async Task DeleteEntityAsync<T>(T deleteObj) where T : EntityBase
+        {
+            try
+            {
+                deleteObj.IsDeleted = true;
+                deleteObj.DateModified = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

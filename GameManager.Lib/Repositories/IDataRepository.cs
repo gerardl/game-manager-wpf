@@ -17,5 +17,6 @@ namespace GameManager.Lib.Repositories
         T UpdateEntity<T>(T updateObj) where T : EntityBase;
         Task<T> UpdateEntityAsync<T>(T updateObj) where T : EntityBase;
         void DeleteEntity<T>(T deleteObj) where T : EntityBase;
+        Task DeleteEntityAsync<T>(T deleteObj) where T : EntityBase;
     }
 }
