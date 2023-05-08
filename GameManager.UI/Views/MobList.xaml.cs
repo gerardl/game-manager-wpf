@@ -49,5 +49,10 @@ namespace GameManager.UI.Views
                 _viewModel.SelectMob(mob);
             }
         }
+
+        private void btnAddMob_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SelectMob(new Mob());
+        }
     }
 }

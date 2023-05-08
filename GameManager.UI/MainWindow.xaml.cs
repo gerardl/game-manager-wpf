@@ -83,7 +83,10 @@ namespace GameManager.UI
             var ucMobList = new MobList();
             var mobs = await _gameService.GetMobsAsync();
 
-            ucMobList.ViewModel = new MobListViewModel();
+            ucMobList.ViewModel = new MobListViewModel
+            {
+                Mobs = mobs
+            };
             ucMobList.ViewModel.MobSelected += OnMobSelected;
             MainContent.Children.Add(ucMobList);
         }
@@ -94,7 +97,7 @@ namespace GameManager.UI
 
             // get fresh data
             var races = await _gameService.GetRacesAsync();
-            var mob = await _gameService.GetMobAsync(e.Mob.Id);
+            var mob = e.Mob.Id > 0 ? await _gameService.GetMobAsync(e.Mob.Id) : e.Mob;
             var ucMob = new MobView();
 
             ucMob.ViewModel = new MobViewModel(_gameService, mob, races);

@@ -7,7 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListView x:Name="lvMobs" PreviewMouseLeftButtonUp="lvMobs_PreviewMouseLeftButtonUp">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="btnAddMob" Content="Add Mob" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Width="75" Click="btnAddMob_Click"/>
+        <ListView x:Name="lvMobs" PreviewMouseLeftButtonUp="lvMobs_PreviewMouseLeftButtonUp" Grid.Row="1">
             <ListView.View>
                 <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Mob List">
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Width="100">
