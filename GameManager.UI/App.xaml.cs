@@ -30,14 +30,17 @@ namespace GameManager.UI
         }
 
         protected void AppStartup(object sender, StartupEventArgs e)
-        {            
+        {
+            var context = _serviceProvider.GetService<GameDbContext>();
+            context?.Database.EnsureCreated();
             var mainWindow = _serviceProvider.GetService<MainWindow>();
             mainWindow?.Show();
         }
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<GameDbContext>(options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=MMODB;Trusted_Connection=True;MultipleActiveResultSets=true"));
+            
+            services.AddDbContext<GameDbContext>(options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=MMODB2;Trusted_Connection=True;MultipleActiveResultSets=true"));
             // Add custom repositories
             services.AddScoped<IDataRepository, SQLRepository>();
 

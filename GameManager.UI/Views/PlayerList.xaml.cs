@@ -51,5 +51,10 @@ namespace GameManager.UI.Views
                 _viewModel.SelectPlayer(player);
             }
         }
+
+        private void btnAddPlayer_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.SelectPlayer(new Player());
+        }
     }
 }

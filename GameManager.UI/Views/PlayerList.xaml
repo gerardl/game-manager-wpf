@@ -7,7 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListView x:Name="lvPlayers" PreviewMouseLeftButtonUp="lvPlayers_PreviewMouseLeftButtonUp">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="btnAddPlayer" Content="Add Player" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Width="75" Click="btnAddPlayer_Click"/>
+        <ListView x:Name="lvPlayers" PreviewMouseLeftButtonUp="lvPlayers_PreviewMouseLeftButtonUp" Grid.Row="1">
             <ListView.View>
                 <GridView AllowsColumnReorder="true" ColumnHeaderToolTip="Player List">
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Width="100">

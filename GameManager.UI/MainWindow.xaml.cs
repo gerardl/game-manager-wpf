@@ -55,12 +55,11 @@ namespace GameManager.UI
 
             // get fresh data
             var races = await _gameService.GetRacesAsync();
-            var player = await _gameService.GetPlayerAsync(e.Player.Id);
+            var player = e.Player.Id > 0 ? await _gameService.GetPlayerAsync(e.Player.Id) : e.Player;
             var ucPlayer = new PlayerView();
             
             ucPlayer.ViewModel = new PlayerViewModel(_gameService, player, races);
             ucPlayer.ViewModel.PlayerSaved += OnPlayerSaved;
-            Grid.SetColumn(ucPlayer, 1);
             MainContent.Children.Add(ucPlayer);
         }
 
@@ -80,12 +79,27 @@ namespace GameManager.UI
 
         async void btnMobs_Click(object sender, RoutedEventArgs e)
         {
-            //MainContent.Children.Clear();
-            //var ucMobList = new MobList();
-            //var mobs = await _gameService.GetMobsAsync();
+            MainContent.Children.Clear();
+            var ucMobList = new MobList();
+            var mobs = await _gameService.GetMobsAsync();
 
-            //ucMobList.ViewModel = new MobListViewModel();
-            //ucMobList.
+            ucMobList.ViewModel = new MobListViewModel();
+            ucMobList.ViewModel.MobSelected += OnMobSelected;
+            MainContent.Children.Add(ucMobList);
+        }
+
+        async void OnMobSelected(object? sender, MobSelectedEventArgs e)
+        {
+            MainContent.Children.Clear();
+
+            // get fresh data
+            var races = await _gameService.GetRacesAsync();
+            var mob = await _gameService.GetMobAsync(e.Mob.Id);
+            var ucMob = new MobView();
+
+            ucMob.ViewModel = new MobViewModel(_gameService, mob, races);
+            //ucMob.ViewModel.MobSaved += OnPlayerSaved;
+            MainContent.Children.Add(ucMob);
         }
     }
 }
