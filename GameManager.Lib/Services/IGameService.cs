@@ -20,5 +20,6 @@ namespace GameManager.Lib.Services
         Task<Mob> GetMobAsync(int id);
         Task<int> AddMobAsync(Mob mob);
         Task UpdateMobAsync(Mob mob);
+        Task DeleteMobAsync(Mob mob);
     }
 }

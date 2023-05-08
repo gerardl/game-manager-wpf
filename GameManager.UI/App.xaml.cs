@@ -39,13 +39,13 @@ namespace GameManager.UI
         {
             services.AddDbContext<GameDbContext>(options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=MMODB;Trusted_Connection=True;MultipleActiveResultSets=true"));
             // Add custom repositories
-            services.AddTransient<IDataRepository, SQLRepository>();
+            services.AddScoped<IDataRepository, SQLRepository>();
 
             // Add custom services
-            services.AddTransient<IGameService, GameService>();
+            services.AddScoped<IGameService, GameService>();
 
             // Add windows
-            services.AddSingleton<MainWindow>();
+            services.AddTransient<MainWindow>();
         }
     }
 }

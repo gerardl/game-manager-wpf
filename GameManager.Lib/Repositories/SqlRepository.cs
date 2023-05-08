@@ -14,6 +14,7 @@ namespace GameManager.Lib.Repositories
         public SQLRepository(GameDbContext context)
         {
             _context = context;
+            _context.ChangeTracker.QueryTrackingBehavior = Microsoft.EntityFrameworkCore.QueryTrackingBehavior.NoTracking;
         }
 
         public List<T> GetAll<T>() where T : EntityBase

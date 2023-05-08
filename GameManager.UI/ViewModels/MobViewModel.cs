@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static GameManager.UI.Models.PlayerViewModel;
 
 namespace GameManager.UI.ViewModels
 {
@@ -13,6 +14,8 @@ namespace GameManager.UI.ViewModels
         private readonly IGameService _gameService;
         public Mob Mob { get; set; }
         public List<Race> Races { get; set; }
+        public event EventHandler<MobSavedEventArgs> MobSaved;
+        public event EventHandler<MobDeletedEventArgs> MobDeleted;
 
         public MobViewModel(IGameService gameService, Mob mob, List<Race> races)
         {
@@ -31,6 +34,27 @@ namespace GameManager.UI.ViewModels
             {
                 await _gameService.UpdateMobAsync(Mob);
             }
+            MobSaved?.Invoke(this, new MobSavedEventArgs { Mob = Mob });
         }
+
+        public async Task Delete()
+        {
+            if (Mob.Id != 0)
+            {
+                await _gameService.DeleteMobAsync(Mob);
+            }
+            MobDeleted?.Invoke(this, new MobDeletedEventArgs { Mob = Mob });
+            Mob = new Mob();
+        }
+    }
+
+    public class MobSavedEventArgs : EventArgs
+    {
+        public Mob Mob { get; set; }
+    }
+
+    public class MobDeletedEventArgs : EventArgs
+    {
+        public Mob Mob { get; set; }
     }
 }

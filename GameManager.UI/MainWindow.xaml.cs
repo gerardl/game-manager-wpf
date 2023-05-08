@@ -3,6 +3,7 @@ using GameManager.Lib.Services;
 using GameManager.UI.Models;
 using GameManager.UI.ViewModels;
 using GameManager.UI.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,47 +31,61 @@ namespace GameManager.UI
     public partial class MainWindow : Window
     {
         private readonly IGameService _gameService;
-        private List<Race> _races = new List<Race>();
         private List<Player> _players = new List<Player>();
+        List<UserControl> _userControls = new List<UserControl>();
 
         public MainWindow(IGameService gameService)
         {
             InitializeComponent();
 
             _gameService = gameService;
-            
-            Task.Run(async () =>
-            {
-                _races = await _gameService.GetRacesAsync();
-                GetPlayerList();
-            });
         }
 
         private void OnPlayerSaved(object? sender, PlayerSavedEventArgs e)
         {
             Task.Run(() =>
             {
-                GetPlayerList();
+               // GetPlayerList();
             });
         }
 
-        async void GetPlayerList()
+        async void OnPlayerSelected(object? sender, PlayerSelectedEventArgs e)
         {
-            _players = await _gameService.GetPlayersAsync();
-            this.Dispatcher.Invoke(() => {
-                var PlayerListViewModel = new PlayerListViewModel
-                {
-                    Players = _players
-                };
-                ucPlayerList.ViewModel = PlayerListViewModel;
-                ucPlayerList.ViewModel.PlayerSelected += OnPlayerSelected;
-            });
-        }
+            MainContent.Children.Clear();
 
-        void OnPlayerSelected(object? sender, PlayerSelectedEventArgs e)
-        {
-            ucPlayer.ViewModel = new PlayerViewModel(_gameService, e.Player, _races);
+            // get fresh data
+            var races = await _gameService.GetRacesAsync();
+            var player = await _gameService.GetPlayerAsync(e.Player.Id);
+            var ucPlayer = new PlayerView();
+            
+            ucPlayer.ViewModel = new PlayerViewModel(_gameService, player, races);
             ucPlayer.ViewModel.PlayerSaved += OnPlayerSaved;
+            Grid.SetColumn(ucPlayer, 1);
+            MainContent.Children.Add(ucPlayer);
+        }
+
+        async void btnPlayers_Click(object sender, RoutedEventArgs e)
+        {
+            MainContent.Children.Clear();
+            var pList = new PlayerList();
+            _players = await _gameService.GetPlayersAsync();
+            var PlayerListViewModel = new PlayerListViewModel
+            {
+                Players = _players
+            };
+            pList.ViewModel = PlayerListViewModel;
+            pList.ViewModel.PlayerSelected += OnPlayerSelected;
+            MainContent.Children.Add(pList);
+        }
+
+        async void btnMobs_Click(object sender, RoutedEventArgs e)
+        {
+            //MainContent.Children.Clear();
+            //var ucMobList = new MobList();
+            //var mobs = await _gameService.GetMobsAsync();
+
+            //ucMobList.ViewModel = new MobListViewModel();
+            //ucMobList.
         }
     }
 }

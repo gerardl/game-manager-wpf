@@ -53,13 +53,17 @@ namespace GameManager.UI.Views
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             await ViewModel.Save();
-            MobSaved?.Invoke(this, new MobSavedEventArgs { Mob = ViewModel.Mob });
         }
 
         private void btnNew_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Mob = new Mob();
             DataContext = ViewModel.Mob;
+        }
+
+        private async void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.Delete();
         }
     }
 

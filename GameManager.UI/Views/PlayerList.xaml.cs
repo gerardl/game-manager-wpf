@@ -30,9 +30,11 @@ namespace GameManager.UI.Views
             get { return _viewModel; }
             set
             {
+                //DataContext = null;
                 _viewModel = value;
-                DataContext = _viewModel.Players;
-                lvPlayers.ItemsSource = ViewModel.Players;
+                //DataContext = _viewModel.Players;
+                lvPlayers.ItemsSource = null;
+                lvPlayers.ItemsSource = _viewModel.Players;
             }
         }
 

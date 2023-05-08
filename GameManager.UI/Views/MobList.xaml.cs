@@ -24,7 +24,6 @@ namespace GameManager.UI.Views
     public partial class MobList : UserControl
     {
         private MobListViewModel _viewModel;
-        public event EventHandler<MobSelectedEventArgs> MobSelected;
 
         internal MobListViewModel ViewModel
         {
@@ -47,13 +46,8 @@ namespace GameManager.UI.Views
             var mob = (Mob)lvMobs.SelectedItem;
             if (mob != null)
             {
-                MobSelected?.Invoke(this, new MobSelectedEventArgs { Mob = mob });
+                _viewModel.SelectMob(mob);
             }
         }
-    }
-
-    public class MobSelectedEventArgs : EventArgs
-    {
-        public Mob Mob { get; set; }
     }
 }

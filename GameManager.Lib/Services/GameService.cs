@@ -66,5 +66,10 @@ namespace GameManager.Lib.Services
         {
             return await _dataRepository.GetAllAsync<Race>();
         }
+
+        public async Task DeleteMobAsync(Mob mob)
+        {
+            await _dataRepository.DeleteEntityAsync(mob);
+        }
     }
 }
