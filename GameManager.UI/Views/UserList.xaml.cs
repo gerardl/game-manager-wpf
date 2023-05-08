@@ -1,5 +1,5 @@
 ﻿using GameManager.Lib.Models.Game;
-using GameManager.UI.Models;
+using GameManager.Lib.Models.Account;
 using GameManager.UI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,40 +19,40 @@ using System.Windows.Shapes;
 namespace GameManager.UI.Views
 {
     /// <summary>
-    /// Interaction logic for PlayerList.xaml
+    /// Interaction logic for UserList.xaml
     /// </summary>
-    public partial class PlayerList : UserControl
+    public partial class UserList : UserControl
     {
-        private PlayerListViewModel _viewModel;
-        
-        internal PlayerListViewModel ViewModel
+        private UserListViewModel _viewModel;
+
+        internal UserListViewModel ViewModel
         {
             get { return _viewModel; }
             set
             {
                 _viewModel = value;
-                lvPlayers.ItemsSource = null;
-                lvPlayers.ItemsSource = _viewModel.Players;
+                lvUsers.ItemsSource = null;
+                lvUsers.ItemsSource = _viewModel.Users;
             }
         }
 
-        public PlayerList()
+        public UserList()
         {
             InitializeComponent();
         }
 
-        private void lvPlayers_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void lvUsers_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var player = (Player)lvPlayers.SelectedItem;
-            if (player != null)
+            var user = (User)lvUsers.SelectedItem;
+            if (user != null)
             {
-                _viewModel.SelectPlayer(player);
+                _viewModel.SelectUser(user);
             }
         }
 
-        private void btnAddPlayer_Click(object sender, RoutedEventArgs e)
+        private void btnAddUser_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.SelectPlayer(new Player());
+            _viewModel.SelectUser(new User());
         }
     }
 }

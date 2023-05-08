@@ -20,7 +20,7 @@
                 <Label FontFamily="Arial Rounded MT Bold" FontSize="14">Menu</Label>
                 <Button x:Name="btnPlayers" Content="Manage Players" Margin="8" Click="btnPlayers_Click" Height="24"></Button>
                 <Button x:Name="btnMobs" Content="Manage Mobs" Margin="8" Click="btnMobs_Click" Height="24"></Button>
-                <Button x:Name="btnAccounts" Content="Manage Users" Margin="8" Height="24"></Button>
+                <Button x:Name="btnAccounts" Content="Manage Users" Margin="8" Height="24" Click="btnAccounts_Click"></Button>
             </StackPanel>
         </Border>
         <StackPanel x:Name="MainContent" Grid.Column="1" Margin="10">

@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace GameManager.Lib.Services
 {
-    public class Account : IAccountService
+    public class AccountService : IAccountService
     {
         private readonly IDataRepository _dataRepository;
 
-        public Account(IDataRepository dataRepository) 
+        public AccountService(IDataRepository dataRepository) 
         {
             _dataRepository = dataRepository;
         }

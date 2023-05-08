@@ -21,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static GameManager.UI.Models.PlayerViewModel;
+using static GameManager.UI.Models.UserViewModel;
 using static GameManager.UI.Views.PlayerList;
 
 namespace GameManager.UI
@@ -31,14 +32,17 @@ namespace GameManager.UI
     public partial class MainWindow : Window
     {
         private readonly IGameService _gameService;
+        private readonly IAccountService _accountService;
+
         private List<Player> _players = new List<Player>();
         List<UserControl> _userControls = new List<UserControl>();
 
-        public MainWindow(IGameService gameService)
+        public MainWindow(IGameService gameService, IAccountService accountService)
         {
             InitializeComponent();
 
             _gameService = gameService;
+            _accountService = accountService;
         }
 
         #region Players
@@ -140,5 +144,57 @@ namespace GameManager.UI
         }
 
         #endregion
+
+        #region Users
+
+        private async void btnAccounts_Click(object sender, RoutedEventArgs e)
+        {
+            await ShowUserList();
+        }
+
+        async void OnUserSelected(object? sender, UserSelectedEventArgs e)
+        {
+            MainContent.Children.Clear();
+
+            // get fresh data
+            var accountTypes = await _accountService.GetAccountTypes();
+            var user = e.User.Id > 0 ? await _accountService.GetUserAsync(e.User.Id) : e.User;
+            var ucUser = new UserView();
+
+            ucUser.ViewModel = new UserViewModel(_accountService, user, accountTypes);
+            ucUser.ViewModel.UserSaved += OnUserSaved;
+            ucUser.ViewModel.UserDeleted += OnUserDeleted;
+            MainContent.Children.Add(ucUser);
+        }
+
+        async void OnUserSaved(object? sender, UserSavedEventArgs e)
+        {
+            // success message?
+            await ShowUserList();
+        }
+
+        async void OnUserDeleted(object? sender, UserDeletedEventArgs e)
+        {
+            // success message?
+            await ShowUserList();
+        }
+
+        private async Task ShowUserList()
+        {
+            MainContent.Children.Clear();
+            var ucUserList = new UserList();
+            var users = await _accountService.GetAccountsAsync();
+
+            ucUserList.ViewModel = new UserListViewModel
+            {
+                Users = users
+            };
+            ucUserList.ViewModel.UserSelected += OnUserSelected;
+            MainContent.Children.Add(ucUserList);
+        }
+
+        #endregion
+
+
     }
 }
