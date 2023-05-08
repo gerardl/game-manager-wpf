@@ -1,4 +1,5 @@
 ﻿using GameManager.Lib.Models.Game;
+using GameManager.Lib.Models.Inventory;
 using GameManager.Lib.Services;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls.Primitives;
 using static GameManager.UI.Views.PlayerList;
 
 namespace GameManager.UI.Models
@@ -15,15 +17,17 @@ namespace GameManager.UI.Models
     {
         private readonly IGameService _gameService;
         public Player Player { get; set; }
+        public List<Item> Inventory { get; set; }
         public List<Race> Races { get; set; }
         public event EventHandler<PlayerSavedEventArgs> PlayerSaved;
         public event EventHandler<PlayerDeletedEventArgs> PlayerDeleted;
 
-        public PlayerViewModel(IGameService gameService, Player player, List<Race> races) 
+        public PlayerViewModel(IGameService gameService, Player player, List<Race> races, List<Item> items) 
         {
             _gameService = gameService;
             Player = player;
             Races = races;
+            Inventory = items;
         }
 
         public async Task Save()

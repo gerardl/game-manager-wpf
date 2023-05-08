@@ -47,7 +47,7 @@ namespace GameManager.UI
             // Add custom services
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IAccountService, AccountService>();
-
+            
             // Add windows
             services.AddTransient<MainWindow>();
         }

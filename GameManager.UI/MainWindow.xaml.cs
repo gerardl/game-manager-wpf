@@ -1,4 +1,5 @@
 ﻿using GameManager.Lib.Models.Game;
+using GameManager.Lib.Models.Inventory;
 using GameManager.Lib.Services;
 using GameManager.UI.Models;
 using GameManager.UI.ViewModels;
@@ -54,13 +55,11 @@ namespace GameManager.UI
 
         async void OnPlayerSaved(object? sender, PlayerSavedEventArgs e)
         {
-            // success message?
             await ShowPlayerList();
         }
 
         async void OnPlayerDeleted(object? sender, PlayerDeletedEventArgs e)
         {
-            // success message?
             await ShowPlayerList();
         }
 
@@ -86,8 +85,26 @@ namespace GameManager.UI
             var races = await _gameService.GetRacesAsync();
             var player = e.Player.Id > 0 ? await _gameService.GetPlayerAsync(e.Player.Id) : e.Player;
             var ucPlayer = new PlayerView();
+
+            var invService = new InventoryService(player);
+            var items = await invService.LoadItems();
             
-            ucPlayer.ViewModel = new PlayerViewModel(_gameService, player, races);
+            //items.Add(new Item
+            //{
+            //    Id = Guid.NewGuid(),
+            //    Name = "Sword",
+            //    Attack = 10,
+            //    Defense = 0,
+            //    Health = 0,
+            //    Speed = 0,
+            //    Value = 10,
+            //    Weight = 10,
+            //    Quantity = 1,
+            //    SlotId = 1
+            //});
+            //await invService.SaveItems(items);
+
+            ucPlayer.ViewModel = new PlayerViewModel(_gameService, player, races, items);
             ucPlayer.ViewModel.PlayerSaved += OnPlayerSaved;
             ucPlayer.ViewModel.PlayerDeleted += OnPlayerDeleted;
             MainContent.Children.Add(ucPlayer);
@@ -104,13 +121,11 @@ namespace GameManager.UI
 
         async void OnMobSaved(object? sender, MobSavedEventArgs e)
         {
-            // success message?
             await ShowMobList();
         }
 
         async void OnMobDeleted(object? sender, MobDeletedEventArgs e)
         {
-            // success message?
             await ShowMobList();
         }
 
@@ -169,13 +184,11 @@ namespace GameManager.UI
 
         async void OnUserSaved(object? sender, UserSavedEventArgs e)
         {
-            // success message?
             await ShowUserList();
         }
 
         async void OnUserDeleted(object? sender, UserDeletedEventArgs e)
         {
-            // success message?
             await ShowUserList();
         }
 
@@ -194,7 +207,6 @@ namespace GameManager.UI
         }
 
         #endregion
-
 
     }
 }
