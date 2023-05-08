@@ -99,7 +99,7 @@ namespace GameManager.Lib.Repositories
             try
             {
                 _context.Entry<T>(updateObj).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync();
 
                 return updateObj;
             }
@@ -113,6 +113,7 @@ namespace GameManager.Lib.Repositories
         {
             try
             {
+                _context.Entry<T>(deleteObj).State = EntityState.Deleted;
                 deleteObj.IsDeleted = true;
                 deleteObj.DateModified = DateTime.UtcNow;
                 _context.SaveChanges();
@@ -127,6 +128,7 @@ namespace GameManager.Lib.Repositories
         {
             try
             {
+                _context.Entry<T>(deleteObj).State = EntityState.Deleted;
                 deleteObj.IsDeleted = true;
                 deleteObj.DateModified = DateTime.UtcNow;
                 await _context.SaveChangesAsync();

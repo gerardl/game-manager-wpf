@@ -51,18 +51,32 @@ namespace GameManager.UI.Views
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            await ViewModel.Save();
-        }
-
-        private void btnNew_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Player = new Player();
-            DataContext = ViewModel.Player;
+            try
+            {
+                await ViewModel.Save();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("There was an error saving the player, please try again.");
+            }
         }
 
         private async void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            await ViewModel.Delete();
+            try
+            {
+                if (MessageBox.Show("Are you sure you want to delete this player?",
+                    "Delete",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    await ViewModel.Delete();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("There was an error deleting the player, please try again.");
+            }
         }
     }
 }

@@ -34,7 +34,14 @@ namespace GameManager.Lib.Services
 
         public async Task UpdatePlayerAsync(Player player)
         {
-            await _dataRepository.UpdateEntityAsync(player);
+            try
+            {
+                await _dataRepository.UpdateEntityAsync(player);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task DeletePlayerAsync(Player player)

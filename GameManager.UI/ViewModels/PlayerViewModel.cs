@@ -28,25 +28,40 @@ namespace GameManager.UI.Models
 
         public async Task Save()
         {
-            if (Player.Id == 0)
+            try
             {
-                Player.Id = await _gameService.AddPlayerAsync(Player);
+                if (Player.Id == 0)
+                {
+                    Player.Id = await _gameService.AddPlayerAsync(Player);
+                }
+                else
+                {
+                    await _gameService.UpdatePlayerAsync(Player);
+                }
+                PlayerSaved?.Invoke(this, new PlayerSavedEventArgs { Player = Player });
             }
-            else
+            catch (Exception)
             {
-                await _gameService.UpdatePlayerAsync(Player);
+                throw;
             }
-            PlayerSaved?.Invoke(this, new PlayerSavedEventArgs { Player = Player });
+
         }
 
         public async Task Delete()
         {
-            if (Player.Id != 0)
+            try
             {
-                await _gameService.DeletePlayerAsync(Player);
+                if (Player.Id != 0)
+                {
+                    await _gameService.DeletePlayerAsync(Player);
+                }
+                PlayerDeleted?.Invoke(this, new PlayerDeletedEventArgs { Player = Player });
+                Player = new Player();
             }
-            PlayerDeleted?.Invoke(this, new PlayerDeletedEventArgs { Player = Player });
-            Player = new Player();
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public class PlayerSavedEventArgs : EventArgs

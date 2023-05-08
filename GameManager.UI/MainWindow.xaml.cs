@@ -41,12 +41,16 @@ namespace GameManager.UI
             _gameService = gameService;
         }
 
-        private void OnPlayerSaved(object? sender, PlayerSavedEventArgs e)
+        async void OnPlayerSaved(object? sender, PlayerSavedEventArgs e)
         {
-            Task.Run(() =>
-            {
-               // GetPlayerList();
-            });
+            // success message?
+            await ShowPlayerList();
+        }
+
+        async void OnPlayerDeleted(object? sender, PlayerDeletedEventArgs e)
+        {
+            // success message?
+            await ShowPlayerList();
         }
 
         async void OnPlayerSelected(object? sender, PlayerSelectedEventArgs e)
@@ -60,21 +64,13 @@ namespace GameManager.UI
             
             ucPlayer.ViewModel = new PlayerViewModel(_gameService, player, races);
             ucPlayer.ViewModel.PlayerSaved += OnPlayerSaved;
+            ucPlayer.ViewModel.PlayerDeleted += OnPlayerDeleted;
             MainContent.Children.Add(ucPlayer);
         }
 
         async void btnPlayers_Click(object sender, RoutedEventArgs e)
         {
-            MainContent.Children.Clear();
-            var pList = new PlayerList();
-            _players = await _gameService.GetPlayersAsync();
-            var PlayerListViewModel = new PlayerListViewModel
-            {
-                Players = _players
-            };
-            pList.ViewModel = PlayerListViewModel;
-            pList.ViewModel.PlayerSelected += OnPlayerSelected;
-            MainContent.Children.Add(pList);
+            await ShowPlayerList();
         }
 
         async void btnMobs_Click(object sender, RoutedEventArgs e)
@@ -103,6 +99,20 @@ namespace GameManager.UI
             ucMob.ViewModel = new MobViewModel(_gameService, mob, races);
             //ucMob.ViewModel.MobSaved += OnPlayerSaved;
             MainContent.Children.Add(ucMob);
+        }
+
+        private async Task ShowPlayerList()
+        {
+            MainContent.Children.Clear();
+            var pList = new PlayerList();
+            _players = await _gameService.GetPlayersAsync();
+            var PlayerListViewModel = new PlayerListViewModel
+            {
+                Players = _players
+            };
+            pList.ViewModel = PlayerListViewModel;
+            pList.ViewModel.PlayerSelected += OnPlayerSelected;
+            MainContent.Children.Add(pList);
         }
     }
 }
