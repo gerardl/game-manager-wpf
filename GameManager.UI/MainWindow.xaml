@@ -16,6 +16,6 @@
             </MenuItem>
         </Menu>
         <views:PlayerList Margin="10,29,445,105" x:Name="ucPlayerList" />
-        <views:PlayerView Margin="355,29,55,90" x:Name="ucPlayer" />
+        <views:PlayerView Margin="355,29,55,30" x:Name="ucPlayer" />
     </Grid>
 </Window>

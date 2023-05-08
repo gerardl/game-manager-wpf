@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static GameManager.UI.Models.PlayerViewModel;
 using static GameManager.UI.Views.PlayerList;
 
 namespace GameManager.UI
@@ -37,9 +38,7 @@ namespace GameManager.UI
             InitializeComponent();
 
             _gameService = gameService;
-            ucPlayerList.PlayerSelected += OnPlayerSelected;
-            ucPlayer.PlayerSaved += OnPlayer_PlayerSaved;
-
+            
             Task.Run(async () =>
             {
                 _races = await _gameService.GetRacesAsync();
@@ -47,7 +46,7 @@ namespace GameManager.UI
             });
         }
 
-        private void OnPlayer_PlayerSaved(object? sender, PlayerSelectedEventArgs e)
+        private void OnPlayerSaved(object? sender, PlayerSavedEventArgs e)
         {
             Task.Run(() =>
             {
@@ -64,18 +63,14 @@ namespace GameManager.UI
                     Players = _players
                 };
                 ucPlayerList.ViewModel = PlayerListViewModel;
+                ucPlayerList.ViewModel.PlayerSelected += OnPlayerSelected;
             });
         }
 
         void OnPlayerSelected(object? sender, PlayerSelectedEventArgs e)
         {
-            var playerViewModel = new PlayerViewModel
-            {
-                Player = e.Player,
-                Races = _races,
-                GameService = _gameService
-            };
-            ucPlayer.ViewModel = playerViewModel;
+            ucPlayer.ViewModel = new PlayerViewModel(_gameService, e.Player, _races);
+            ucPlayer.ViewModel.PlayerSaved += OnPlayerSaved;
         }
     }
 }

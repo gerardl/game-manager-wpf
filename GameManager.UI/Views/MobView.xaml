@@ -1,20 +1,19 @@
-﻿<UserControl x:Class="GameManager.UI.Views.PlayerView"
+﻿<UserControl x:Class="GameManager.UI.Views.MobView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GameManager.UI"
+             xmlns:local="clr-namespace:GameManager.UI.Views"
              xmlns:ext="clr-namespace:GameManager.UI.Extensions"
              xmlns:game="clr-namespace:GameManager.Lib.Models.Game;assembly=GameManager.Lib"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="600">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -45,6 +44,5 @@
         <TextBox Name="txtIntelligence" Grid.Row="7" Grid.Column="1" Margin="0,0,0,10" Text="{Binding Path=Intelligence}"/>
         <Button Name="btnSave" Grid.Row="8" Grid.Column="1" Content="Save" Click="btnSave_Click"/>
         <Button Name="btnNew" Grid.Row="9" Grid.Column="1" Content="New" Click="btnNew_Click"/>
-        <Button Name="btnDelete" Grid.Row="10" Grid.Column="1" Content="Delete" Click="btnDelete_Click"/>
     </Grid>
 </UserControl>

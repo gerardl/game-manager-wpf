@@ -20,7 +20,7 @@ namespace GameManager.Lib.Models.Base
         [NotMapped]
         public int MaxHealth { get { return 1000 * (this.Constitution + (this.Strength / 2)) / 5; } }
         public int Strength { get; set; }
-        public int Dexterity { get; set; }
+        public int Dexterity { get; set; }  
         public int Constitution { get; set; }
         public int Intelligence { get; set; }
         [Column(TypeName = "decimal(18,4)")]

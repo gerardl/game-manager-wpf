@@ -1,5 +1,4 @@
 ﻿using GameManager.Lib.Models.Game;
-using GameManager.UI.Models;
 using GameManager.UI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,39 +14,46 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static GameManager.UI.Views.PlayerList;
 
 namespace GameManager.UI.Views
 {
     /// <summary>
-    /// Interaction logic for PlayerList.xaml
+    /// Interaction logic for MobList.xaml
     /// </summary>
-    public partial class PlayerList : UserControl
+    public partial class MobList : UserControl
     {
-        private PlayerListViewModel _viewModel;
-        
-        internal PlayerListViewModel ViewModel
+        private MobListViewModel _viewModel;
+        public event EventHandler<MobSelectedEventArgs> MobSelected;
+
+        internal MobListViewModel ViewModel
         {
             get { return _viewModel; }
             set
             {
                 _viewModel = value;
-                DataContext = _viewModel.Players;
-                lvPlayers.ItemsSource = ViewModel.Players;
+                DataContext = _viewModel.Mobs;
+                lvMobs.ItemsSource = ViewModel.Mobs;
             }
         }
 
-        public PlayerList()
+        public MobList()
         {
             InitializeComponent();
         }
 
-        private void lvPlayers_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void lvMobs_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var player = (Player)lvPlayers.SelectedItem;
-            if (player != null)
+            var mob = (Mob)lvMobs.SelectedItem;
+            if (mob != null)
             {
-                _viewModel.SelectPlayer(player);
+                MobSelected?.Invoke(this, new MobSelectedEventArgs { Mob = mob });
             }
         }
+    }
+
+    public class MobSelectedEventArgs : EventArgs
+    {
+        public Mob Mob { get; set; }
     }
 }

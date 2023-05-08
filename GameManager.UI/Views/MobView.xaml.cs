@@ -1,9 +1,9 @@
 ﻿using GameManager.Lib.Models.Game;
 using GameManager.UI.Models;
+using GameManager.UI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,16 +20,17 @@ using static GameManager.UI.Views.PlayerList;
 namespace GameManager.UI.Views
 {
     /// <summary>
-    /// Interaction logic for PlayerView.xaml
+    /// Interaction logic for MobView.xaml
     /// </summary>
-    public partial class PlayerView : UserControl
+    public partial class MobView : UserControl
     {
-        private PlayerViewModel _viewModel;
+        private MobViewModel _viewModel;
+        public event EventHandler<MobSavedEventArgs> MobSaved;
         
-        internal PlayerViewModel ViewModel
+        internal MobViewModel ViewModel
         {
             get { return _viewModel; }
-            set 
+            set
             {
                 // null the context so we don't try to
                 // bind the player raceid to empty combobox
@@ -40,11 +41,11 @@ namespace GameManager.UI.Views
                 {
                     cbRace.Items.Add(new KeyValuePair<int, string>(race.Id, race.Name));
                 }
-                DataContext = _viewModel.Player;
+                DataContext = _viewModel.Mob;
             }
         }
 
-        public PlayerView()
+        public MobView()
         {
             InitializeComponent();
         }
@@ -52,17 +53,18 @@ namespace GameManager.UI.Views
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             await ViewModel.Save();
+            MobSaved?.Invoke(this, new MobSavedEventArgs { Mob = ViewModel.Mob });
         }
 
         private void btnNew_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Player = new Player();
-            DataContext = ViewModel.Player;
+            ViewModel.Mob = new Mob();
+            DataContext = ViewModel.Mob;
         }
+    }
 
-        private async void btnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            await ViewModel.Delete();
-        }
+    public class MobSavedEventArgs : EventArgs
+    {
+        public Mob Mob { get; set; }
     }
 }
