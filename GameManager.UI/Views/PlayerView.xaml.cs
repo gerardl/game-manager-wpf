@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static GameManager.UI.Views.PlayerList;
 
 namespace GameManager.UI.Views
 {
@@ -24,6 +25,8 @@ namespace GameManager.UI.Views
     public partial class PlayerView : UserControl
     {
         private PlayerViewModel _viewModel;
+        public event EventHandler<PlayerSelectedEventArgs> PlayerSaved;
+
         internal PlayerViewModel ViewModel
         {
             get { return _viewModel; }
@@ -55,6 +58,13 @@ namespace GameManager.UI.Views
             {
                 await ViewModel.GameService.UpdatePlayerAsync(player);
             }
+            PlayerSaved?.Invoke(this, new PlayerSelectedEventArgs { Player = player });
+        }
+
+        private void btnNew_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Player = new Player();
+            DataContext = ViewModel.Player;
         }
     }
 }

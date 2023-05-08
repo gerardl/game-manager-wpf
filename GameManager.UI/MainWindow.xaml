@@ -15,9 +15,7 @@
                 <MenuItem Command="ApplicationCommands.Paste"/>
             </MenuItem>
         </Menu>
-        <Button Name="btnTest" Content="Button" HorizontalAlignment="Left" Margin="394,359,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <Button Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="450,359,0,0" VerticalAlignment="Top" Click="btnSave_Click" RenderTransformOrigin="2.28,0.503"/>
         <views:PlayerList Margin="10,29,445,105" x:Name="ucPlayerList" />
-        <views:PlayerView Margin="355,29,55,105" x:Name="ucPlayer" />
+        <views:PlayerView Margin="355,29,55,90" x:Name="ucPlayer" />
     </Grid>
 </Window>

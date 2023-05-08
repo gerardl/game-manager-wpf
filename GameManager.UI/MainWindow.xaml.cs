@@ -29,53 +29,53 @@ namespace GameManager.UI
     public partial class MainWindow : Window
     {
         private readonly IGameService _gameService;
+        private List<Race> _races = new List<Race>();
+        private List<Player> _players = new List<Player>();
+
         public MainWindow(IGameService gameService)
         {
-            _gameService = gameService;
             InitializeComponent();
+
+            _gameService = gameService;
+            ucPlayerList.PlayerSelected += OnPlayerSelected;
+            ucPlayer.PlayerSaved += OnPlayer_PlayerSaved;
+
+            Task.Run(async () =>
+            {
+                _races = await _gameService.GetRacesAsync();
+                GetPlayerList();
+            });
         }
 
-        // create event handler for PlayerSelected event
-        async void OnPlayerSelected(object? sender, PlayerSelectedEventArgs e)
+        private void OnPlayer_PlayerSaved(object? sender, PlayerSelectedEventArgs e)
+        {
+            Task.Run(() =>
+            {
+                GetPlayerList();
+            });
+        }
+
+        async void GetPlayerList()
+        {
+            _players = await _gameService.GetPlayersAsync();
+            this.Dispatcher.Invoke(() => {
+                var PlayerListViewModel = new PlayerListViewModel
+                {
+                    Players = _players
+                };
+                ucPlayerList.ViewModel = PlayerListViewModel;
+            });
+        }
+
+        void OnPlayerSelected(object? sender, PlayerSelectedEventArgs e)
         {
             var playerViewModel = new PlayerViewModel
             {
                 Player = e.Player,
-                Races = await _gameService.GetRacesAsync(),
+                Races = _races,
                 GameService = _gameService
             };
             ucPlayer.ViewModel = playerViewModel;
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var PlayerListViewModel = new PlayerListViewModel
-            {
-                Players = await _gameService.GetPlayersAsync()
-            };
-            ucPlayerList.ViewModel = PlayerListViewModel;
-            ucPlayerList.PlayerSelected += OnPlayerSelected;
-
-            //var playerViewModel = new PlayerViewModel
-            //{
-            //    Player = new Player { RaceId = (int)Races.Elf },
-            //    Races = await _gameService.GetRacesAsync(),
-            //    GameService = _gameService
-            //};
-            //ucPlayer.ViewModel = playerViewModel;
-        }
-
-        private async void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            var player = ucPlayer.ViewModel.Player;
-            if (player.Id == 0)
-            {
-                player.Id = await _gameService.AddPlayerAsync(player);
-            }
-            else
-            {
-                await _gameService.UpdatePlayerAsync(player);
-            }
         }
     }
 }
