@@ -41,6 +41,13 @@ namespace GameManager.UI
             _gameService = gameService;
         }
 
+        #region Players
+
+        async void btnPlayers_Click(object sender, RoutedEventArgs e)
+        {
+            await ShowPlayerList();
+        }
+
         async void OnPlayerSaved(object? sender, PlayerSavedEventArgs e)
         {
             // success message?
@@ -51,6 +58,20 @@ namespace GameManager.UI
         {
             // success message?
             await ShowPlayerList();
+        }
+
+        private async Task ShowPlayerList()
+        {
+            MainContent.Children.Clear();
+            var pList = new PlayerList();
+            _players = await _gameService.GetPlayersAsync();
+            var PlayerListViewModel = new PlayerListViewModel
+            {
+                Players = _players
+            };
+            pList.ViewModel = PlayerListViewModel;
+            pList.ViewModel.PlayerSelected += OnPlayerSelected;
+            MainContent.Children.Add(pList);
         }
 
         async void OnPlayerSelected(object? sender, PlayerSelectedEventArgs e)
@@ -68,12 +89,43 @@ namespace GameManager.UI
             MainContent.Children.Add(ucPlayer);
         }
 
-        async void btnPlayers_Click(object sender, RoutedEventArgs e)
-        {
-            await ShowPlayerList();
-        }
+        #endregion
+
+        #region Mobs
 
         async void btnMobs_Click(object sender, RoutedEventArgs e)
+        {
+           await ShowMobList();
+        }
+
+        async void OnMobSaved(object? sender, MobSavedEventArgs e)
+        {
+            // success message?
+            await ShowMobList();
+        }
+
+        async void OnMobDeleted(object? sender, MobDeletedEventArgs e)
+        {
+            // success message?
+            await ShowMobList();
+        }
+
+        async void OnMobSelected(object? sender, MobSelectedEventArgs e)
+        {
+            MainContent.Children.Clear();
+
+            // get fresh data
+            var races = await _gameService.GetRacesAsync();
+            var mob = e.Mob.Id > 0 ? await _gameService.GetMobAsync(e.Mob.Id) : e.Mob;
+            var ucMob = new MobView();
+
+            ucMob.ViewModel = new MobViewModel(_gameService, mob, races);
+            ucMob.ViewModel.MobSaved += OnMobSaved;
+            ucMob.ViewModel.MobDeleted += OnMobDeleted;
+            MainContent.Children.Add(ucMob);
+        }
+
+        private async Task ShowMobList()
         {
             MainContent.Children.Clear();
             var ucMobList = new MobList();
@@ -87,32 +139,6 @@ namespace GameManager.UI
             MainContent.Children.Add(ucMobList);
         }
 
-        async void OnMobSelected(object? sender, MobSelectedEventArgs e)
-        {
-            MainContent.Children.Clear();
-
-            // get fresh data
-            var races = await _gameService.GetRacesAsync();
-            var mob = e.Mob.Id > 0 ? await _gameService.GetMobAsync(e.Mob.Id) : e.Mob;
-            var ucMob = new MobView();
-
-            ucMob.ViewModel = new MobViewModel(_gameService, mob, races);
-            //ucMob.ViewModel.MobSaved += OnPlayerSaved;
-            MainContent.Children.Add(ucMob);
-        }
-
-        private async Task ShowPlayerList()
-        {
-            MainContent.Children.Clear();
-            var pList = new PlayerList();
-            _players = await _gameService.GetPlayersAsync();
-            var PlayerListViewModel = new PlayerListViewModel
-            {
-                Players = _players
-            };
-            pList.ViewModel = PlayerListViewModel;
-            pList.ViewModel.PlayerSelected += OnPlayerSelected;
-            MainContent.Children.Add(pList);
-        }
+        #endregion
     }
 }

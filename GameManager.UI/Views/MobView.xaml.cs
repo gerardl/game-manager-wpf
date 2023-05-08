@@ -25,8 +25,7 @@ namespace GameManager.UI.Views
     public partial class MobView : UserControl
     {
         private MobViewModel _viewModel;
-        public event EventHandler<MobSavedEventArgs> MobSaved;
-        
+
         internal MobViewModel ViewModel
         {
             get { return _viewModel; }
@@ -52,23 +51,32 @@ namespace GameManager.UI.Views
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            await ViewModel.Save();
-        }
-
-        private void btnNew_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Mob = new Mob();
-            DataContext = ViewModel.Mob;
+            try
+            {
+                await ViewModel.Save();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("There was an error saving the mob, please try again.");
+            }
         }
 
         private async void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            await ViewModel.Delete();
+            try
+            {
+                if (MessageBox.Show("Are you sure you want to delete this Mob?",
+                    "Delete",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    await ViewModel.Delete();
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("There was an error deleting the mob, please try again.");
+            }
         }
-    }
-
-    public class MobSavedEventArgs : EventArgs
-    {
-        public Mob Mob { get; set; }
     }
 }
