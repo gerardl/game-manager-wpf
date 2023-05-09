@@ -24,6 +24,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Label>Name:</Label>
         <TextBox Name="txtName" Grid.Column="1" Margin="0,0,0,10" Text="{Binding Path=Name}" />
@@ -43,6 +44,7 @@
         <Label Grid.Row="7">Intelligence:</Label>
         <TextBox Name="txtIntelligence" Grid.Row="7" Grid.Column="1" Margin="0,0,0,10" Text="{Binding Path=Intelligence}"/>
         <Button Name="btnSave" Grid.Row="8" Margin="10" Grid.Column="1" Content="Save" Click="btnSave_Click"/>
-        <Button Name="btnDelete" Grid.Row="9" Margin="10" Grid.Column="1" Content="Delete" Click="btnDelete_Click"/>
+        <Button Name="btnInventory" Grid.Row="9" Margin="10" Grid.Column="1" Content="Inventory" Click="btnInventory_Click"/>
+        <Button Name="btnDelete" Grid.Row="10" Margin="10" Grid.Column="1" Content="Delete" Click="btnDelete_Click"/>
     </Grid>
 </UserControl>

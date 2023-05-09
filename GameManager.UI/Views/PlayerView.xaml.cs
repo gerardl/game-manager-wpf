@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static GameManager.UI.Models.PlayerViewModel;
 using static GameManager.UI.Views.PlayerList;
 
 namespace GameManager.UI.Views
@@ -25,7 +26,8 @@ namespace GameManager.UI.Views
     public partial class PlayerView : UserControl
     {
         private PlayerViewModel _viewModel;
-        
+        private InventoryWindow _inventoryWindow;
+
         internal PlayerViewModel ViewModel
         {
             get { return _viewModel; }
@@ -77,6 +79,19 @@ namespace GameManager.UI.Views
             {
                 MessageBox.Show("There was an error deleting the player, please try again.");
             }
+        }
+
+        async void btnInventory_Click(object sender, RoutedEventArgs e)
+        {
+            await _viewModel.LoadInventory();
+            _inventoryWindow = new InventoryWindow(_viewModel);
+            ViewModel.InventorySaved += OnInventorySaved;
+            _inventoryWindow.Show();
+        }
+
+        private void OnInventorySaved(object? sender, InventorySavedEventArgs e)
+        {
+            _inventoryWindow.Close();
         }
     }
 }

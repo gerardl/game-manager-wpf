@@ -86,25 +86,7 @@ namespace GameManager.UI
             var player = e.Player.Id > 0 ? await _gameService.GetPlayerAsync(e.Player.Id) : e.Player;
             var ucPlayer = new PlayerView();
 
-            var invService = new InventoryService(player);
-            var items = await invService.LoadItems();
-            
-            //items.Add(new Item
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Name = "Sword",
-            //    Attack = 10,
-            //    Defense = 0,
-            //    Health = 0,
-            //    Speed = 0,
-            //    Value = 10,
-            //    Weight = 10,
-            //    Quantity = 1,
-            //    SlotId = 1
-            //});
-            //await invService.SaveItems(items);
-
-            ucPlayer.ViewModel = new PlayerViewModel(_gameService, player, races, items);
+            ucPlayer.ViewModel = new PlayerViewModel(_gameService, player, races);
             ucPlayer.ViewModel.PlayerSaved += OnPlayerSaved;
             ucPlayer.ViewModel.PlayerDeleted += OnPlayerDeleted;
             MainContent.Children.Add(ucPlayer);

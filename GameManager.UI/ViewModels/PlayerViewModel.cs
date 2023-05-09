@@ -13,7 +13,7 @@ using static GameManager.UI.Views.PlayerList;
 
 namespace GameManager.UI.Models
 {
-    internal class PlayerViewModel
+    public class PlayerViewModel
     {
         private readonly IGameService _gameService;
         public Player Player { get; set; }
@@ -21,13 +21,13 @@ namespace GameManager.UI.Models
         public List<Race> Races { get; set; }
         public event EventHandler<PlayerSavedEventArgs> PlayerSaved;
         public event EventHandler<PlayerDeletedEventArgs> PlayerDeleted;
+        public event EventHandler<InventorySavedEventArgs> InventorySaved;
 
-        public PlayerViewModel(IGameService gameService, Player player, List<Race> races, List<Item> items) 
+        public PlayerViewModel(IGameService gameService, Player player, List<Race> races) 
         {
             _gameService = gameService;
             Player = player;
             Races = races;
-            Inventory = items;
         }
 
         public async Task Save()
@@ -49,6 +49,19 @@ namespace GameManager.UI.Models
                 throw;
             }
 
+        }
+
+        public async Task LoadInventory()
+        {
+            var invService = new InventoryService(Player);
+            Inventory = await invService.LoadItems();
+        }
+
+        public async Task SaveInventory()
+        {
+            var invService = new InventoryService(Player);
+            await invService.SaveItems(Inventory);
+            InventorySaved?.Invoke(this, new InventorySavedEventArgs { Inventory = Inventory });
         }
 
         public async Task Delete()
@@ -76,6 +89,11 @@ namespace GameManager.UI.Models
         public class PlayerDeletedEventArgs : EventArgs
         {
             public Player Player { get; set; }
+        }
+
+        public class InventorySavedEventArgs : EventArgs
+        {
+            public List<Item> Inventory { get; set; }
         }
     }
 }
