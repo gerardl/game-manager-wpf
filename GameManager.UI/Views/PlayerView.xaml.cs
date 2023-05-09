@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -92,10 +93,14 @@ namespace GameManager.UI.Views
 
         async void btnInventory_Click(object sender, RoutedEventArgs e)
         {
+            
             await _viewModel.LoadInventory();
-            _inventoryWindow = new InventoryWindow(_viewModel);
-            ViewModel.InventorySaved += OnInventorySaved;
-            _inventoryWindow.Show();
+
+            Application.Current.Dispatcher.Invoke((Action)delegate {
+                _inventoryWindow = new InventoryWindow(_viewModel);
+                ViewModel.InventorySaved += OnInventorySaved;
+                _inventoryWindow.Show();
+            });
         }
 
         private void OnInventorySaved(object? sender, InventorySavedEventArgs e)

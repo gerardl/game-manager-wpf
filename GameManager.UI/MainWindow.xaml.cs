@@ -55,6 +55,7 @@ namespace GameManager.UI
 
         async void OnPlayerSaved(object? sender, PlayerSavedEventArgs e)
         {
+            
             await ShowPlayerList();
         }
 
@@ -70,7 +71,7 @@ namespace GameManager.UI
             _players = await _gameService.GetPlayersAsync();
             var PlayerListViewModel = new PlayerListViewModel
             {
-                Players = _players
+                Players = _players.OrderBy(o => o.Name).ToList()
             };
             pList.ViewModel = PlayerListViewModel;
             pList.ViewModel.PlayerSelected += OnPlayerSelected;
@@ -134,7 +135,7 @@ namespace GameManager.UI
 
             ucMobList.ViewModel = new MobListViewModel
             {
-                Mobs = mobs
+                Mobs = mobs.OrderBy(o => o.Name).ToList()
             };
             ucMobList.ViewModel.MobSelected += OnMobSelected;
             MainContent.Children.Add(ucMobList);
@@ -182,7 +183,7 @@ namespace GameManager.UI
 
             ucUserList.ViewModel = new UserListViewModel
             {
-                Users = users
+                Users = users.OrderBy(o => o.LastName).ThenBy(t => t.FirstName).ToList()
             };
             ucUserList.ViewModel.UserSelected += OnUserSelected;
             MainContent.Children.Add(ucUserList);
