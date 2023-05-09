@@ -2,7 +2,8 @@
 ---
 ### By Gerard Lucas  
 
-[Video Walkthrough](https://www.youtube.com/watch?v=F9ZlS_k0NhE)
+The Game Manager application allows users to add, update, and delete users, players, npcs (mobs), and inventory items for a fake MMORPG game.
+The project is split between a front-end WPF application and a back-end library that handles data access and business logic.
 
 ## Requirements & Settings
 
