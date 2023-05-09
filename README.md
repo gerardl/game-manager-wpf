@@ -37,11 +37,8 @@ and uses Dependency Injection to inject services into the view models. The view 
 
 The project uses the following packages:
 
-+ Microsoft.EntityFrameworkCore
-+ Microsoft.EntityFrameworkCore.Design
-+ Microsoft.EntityFrameworkCore.SqlServer
-+ Microsoft.EntityFrameworkCore.Tools
-+ System.Text.Json
++ Microsoft.Extensions.DependencyInjection
++ GameManger.Lib
 
 ## Feature Targets
 
