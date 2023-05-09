@@ -43,6 +43,15 @@ namespace GameManager.UI.Views
                     cbRace.Items.Add(new KeyValuePair<int, string>(race.Id, race.Name));
                 }
                 DataContext = _viewModel.Player;
+                
+                if (_viewModel.Player.Id > 0)
+                {
+                    btnInventory.IsEnabled = true;
+                }
+                else
+                {
+                    btnInventory.IsEnabled = false;
+                }
             }
         }
 
